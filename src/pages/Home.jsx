@@ -7,7 +7,7 @@ function Home() {
   const [searchText, setSearchText] = useState('');
   // 뷰모드 상태(리스트형식인지 목록형식인지)
   const [isGridView, setIsGridView] = useState(true);
-  const dummyData = [
+  const [dummyData, setDummyData] = useState([
     {
       id: 1,
       title: '친환경 도시 농업 플랫폼',
@@ -32,11 +32,15 @@ function Home() {
       lastModified: '2023-06-01',
       category: '여행',
     },
-  ];
+  ]);
 
   const filteredData = dummyData.filter(item =>
     item.title.toLowerCase().includes(searchText.toLowerCase()),
   );
+
+  const handleDeleteItem = id => {
+    setDummyData(dummyData.filter(item => item.id !== id));
+  };
   return (
     <div className="container mx-auto px-4 py-16">
       <div className="mb-6 flex flex-col sm:flex-row items-center justify-between">
@@ -47,6 +51,7 @@ function Home() {
         filteredData={filteredData}
         isGridView={isGridView}
         searchText={searchText}
+        onDeleteItem={handleDeleteItem}
       />
     </div>
   );
