@@ -7,19 +7,23 @@ function Home() {
   const [searchText, setSearchText] = useState('');
   // 뷰모드 상태(리스트형식인지 목록형식인지)
   const [isGridView, setIsGridView] = useState(true);
-  const [dummyData, setDummyData] = useState([]);
+  const [data, setData] = useState([]);
 
-  useEffect(() => {
-    const data = fetch('http://localhost:8000/canvases')
+  async function fetchData() {
+    const data = await fetch('http://localhost:8000/canvases')
       .then(res => res.json())
       .catch(console.error);
+    setData(data);
+  }
+  useEffect(() => {
+    fetchData();
   }, []);
 
   const handleDeleteItem = id => {
-    setDummyData(dummyData.filter(item => item.id !== id));
+    setData(data.filter(item => item.id !== id));
   };
 
-  const filteredData = dummyData.filter(item =>
+  const filteredData = data.filter(item =>
     item.title.toLowerCase().includes(searchText.toLowerCase()),
   );
 
