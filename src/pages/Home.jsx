@@ -38,8 +38,9 @@ function Home() {
     if (confirm('삭제 하시겠습니까?') === false) {
       return;
     }
-    // delete logic
+
     try {
+      // delete logic
       await deleteCanvas(id);
       fetchData({ title_like: searchText });
     } catch (err) {

@@ -1,6 +1,7 @@
 import { canvases } from './http';
 import { v4 as uuidv4 } from 'uuid';
 import dayjs from 'dayjs';
+import { data } from 'react-router-dom';
 
 // 목록 조회
 export function getCanvases(params) {
@@ -30,4 +31,15 @@ export function createCanvas() {
 export async function deleteCanvas(id) {
   // .delete()는 삭제만 하고, 삭제된 데이터를 돌려줄 필요가 없으니 return을 사용하지 않는다.
   await canvases.delete(`/${id}`);
+}
+
+// 하나의 캔버스 조회
+export async function getCanvasById(id) {
+  const { data } = await canvases.get(`/${id}`);
+  return data;
+}
+
+// 하나의 캔버스 타이틀만 업데이트
+export async function updateTitle(id, title) {
+  canvases.patch(`/${id}`, { title });
 }
