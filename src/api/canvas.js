@@ -41,5 +41,12 @@ export async function getCanvasById(id) {
 
 // 하나의 캔버스 타이틀만 업데이트
 export async function updateTitle(id, title) {
+  // 일부만 바꾸기 때문에 객체 안에 title
   await canvases.patch(`/${id}`, { title });
+}
+
+// 캔버스 전체 업데이트
+export async function updateCanvas(id, canvas) {
+  // 캔버스 전체를 바꿔야 하기 때문에 통째로 보낸다.
+  await canvases.put(`/${id}`, canvas);
 }

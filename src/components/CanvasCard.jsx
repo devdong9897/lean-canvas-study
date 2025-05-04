@@ -2,10 +2,17 @@
 import { FaPlus } from 'react-icons/fa';
 import Note from './Note';
 
-function CanvasCard({ title, isSubtitle = false, notes = [] }) {
+function CanvasCard({ title, isSubtitle = false, notes = [], onNotesChange }) {
   const handleAddNote = () => {};
 
   const handleRemoveNote = id => {};
+
+  const handleUpdateNote = (id, content, color) => {
+    onNotesChange(
+      // note.id === id라면 { ...note, content, color }로 업데이트, { ...note }는 기존 노트를 그대로 복사한 후, content와 color만 바꾼다.
+      notes.map(note => (note.id === id ? { ...note, content, color } : note)),
+    );
+  };
   return (
     <div className="row-span-1 bg-white min-h-48 border border-collapse border-gray-300">
       <div
@@ -27,6 +34,7 @@ function CanvasCard({ title, isSubtitle = false, notes = [] }) {
             content={note.content}
             color={note.color}
             onRemoveNote={handleRemoveNote}
+            onUpdateNote={handleUpdateNote}
           />
         ))}
       </div>

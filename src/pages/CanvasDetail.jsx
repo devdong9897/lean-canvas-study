@@ -3,11 +3,11 @@ import { useParams } from 'react-router-dom';
 import CanvasTitle from '../components/CanvasTitle';
 import LeanCanvas from '../components/LeanCanvas';
 import { useEffect, useState } from 'react';
-import { getCanvasById, updateTitle } from '../api/canvas';
+import { getCanvasById, updateCanvas, updateTitle } from '../api/canvas';
 
 function CanvasDetail() {
   const { id } = useParams();
-  // 캔버스 상태
+  // 현재 캔버스의 상태
   const [canvas, setCanvas] = useState();
 
   useEffect(() => {
@@ -27,10 +27,24 @@ function CanvasDetail() {
       alert(err.message);
     }
   };
+
+  // 업데이트 이벤트핸들러
+  // updatedCanvas: 수정된 캔버스
+  const handleCanvasChange = async updatedCanvas => {
+    try {
+      await updateCanvas(id, updatedCanvas);
+      // 업데이트 된 캔버스를 화면에 보여줌.
+      setCanvas(updatedCanvas);
+    } catch (err) {
+      alert(err.message);
+    }
+  };
   return (
     <div>
       <CanvasTitle value={canvas?.title} onChange={handleTitleChange} />
-      {canvas && <LeanCanvas canvas={canvas} />}
+      {canvas && (
+        <LeanCanvas canvas={canvas} onCanvasChange={handleCanvasChange} />
+      )}
     </div>
   );
 }
