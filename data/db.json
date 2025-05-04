@@ -32,19 +32,9 @@
       "problem": {
         "notes": [
           {
-            "id": "p1",
-            "content": "기존 스마트홈 시스템의 복잡성 \n@@dsdfdfdd\n\n\n",
-            "color": "bg-green-300"
-          },
-          {
-            "id": "p2",
-            "content": "높은 초기 설치 비용",
+            "id": "6ee273e2-1d36-4870-b1f3-460d80bd1125",
+            "content": "",
             "color": "bg-pink-300"
-          },
-          {
-            "id": "p3",
-            "content": "다양한 기기 간 호환성 문제",
-            "color": "bg-blue-300"
           }
         ]
       },
@@ -90,8 +80,8 @@
         "notes": [
           {
             "id": "s1",
-            "content": "AI 기반 자동화 시스템",
-            "color": "bg-yellow-300"
+            "content": "AI 기반 자동화 시스템학교",
+            "color": "bg-green-300"
           },
           {
             "id": "s2",
