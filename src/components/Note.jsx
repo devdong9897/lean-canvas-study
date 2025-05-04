@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { AiOutlineClose, AiOutlineCheck } from 'react-icons/ai';
 
-const Note = ({ id, onRemoveNote }) => {
+const Note = ({ id, content, onRemoveNote, color: initialColor }) => {
   const colorOptions = [
     'bg-yellow-300',
     'bg-pink-300',
@@ -9,18 +9,23 @@ const Note = ({ id, onRemoveNote }) => {
     'bg-green-300',
   ];
 
-  // 랜덤 색상
-  const randomIndex = Math.floor(Math.random() * colorOptions.length);
-
   // 메모색상 상태
-  const [color, setColor] = useState(colorOptions[randomIndex]);
+  const [color, setColor] = useState(() => {
+    // initialColor이라는 컬러 값이 있으면 그 색상을 사용.
+    if (initialColor) return initialColor;
+
+    // initialColor가 없으면, 랜덤하게 색상 중 하나를 선택
+    // 랜덤 색상
+    const randomIndex = Math.floor(Math.random() * colorOptions.length);
+    return colorOptions[randomIndex];
+  });
 
   // 수정모드 상태
   const [isEditing, setIsEditing] = useState(false);
 
   // 글작성시 스크롤나지 않게...
   const textareaRef = useRef(null);
-  const [content, setContent] = useState('');
+
   // 매번 화면이 그려질 때마다 textarea의 높이를 내용에 맞게 자동으로 조정하기 위해 useEffect사용
   useEffect(() => {
     if (textareaRef.current) {
@@ -60,7 +65,6 @@ const Note = ({ id, onRemoveNote }) => {
       <textarea
         ref={textareaRef}
         value={content}
-        onChange={e => setContent(e.target.value)}
         className={`w-full h-full bg-transparent resize-none border-none focus:outline-none text-gray-900 overflow-hidden`}
         aria-label="Edit Note"
         placeholder="메모를 작성하세요."

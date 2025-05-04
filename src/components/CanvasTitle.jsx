@@ -19,7 +19,6 @@ function CanvasTitle({ value, onChange }) {
     setIsEditing(true);
   };
 
-  // 완료버튼 클릭했을 때 실행할 함수
   const handleDoneTitle = () => {
     setIsEditing(false);
     onChange(title);

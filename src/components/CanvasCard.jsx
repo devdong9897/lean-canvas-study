@@ -1,20 +1,11 @@
 // + 클릭시 나오는 컴포넌트
 import { FaPlus } from 'react-icons/fa';
 import Note from './Note';
-import { useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 
-function CanvasCard({ title, isSubtitle = false }) {
-  const [notes, setNotes] = useState([]);
+function CanvasCard({ title, isSubtitle = false, notes = [] }) {
+  const handleAddNote = () => {};
 
-  const handleAddNote = () => {
-    // 기존 메모 + 새 메모를 하나의 배열로 합친다.
-    setNotes([...notes, { id: uuidv4(), content: '' }]);
-  };
-
-  const handleRemoveNote = id => {
-    setNotes(notes.filter(note => note.id !== id));
-  };
+  const handleRemoveNote = id => {};
   return (
     <div className="row-span-1 bg-white min-h-48 border border-collapse border-gray-300">
       <div
@@ -34,6 +25,7 @@ function CanvasCard({ title, isSubtitle = false }) {
             key={note.id}
             id={note.id}
             content={note.content}
+            color={note.color}
             onRemoveNote={handleRemoveNote}
           />
         ))}

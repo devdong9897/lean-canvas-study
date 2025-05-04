@@ -1,7 +1,6 @@
 import { canvases } from './http';
 import { v4 as uuidv4 } from 'uuid';
 import dayjs from 'dayjs';
-import { data } from 'react-router-dom';
 
 // 목록 조회
 export function getCanvases(params) {
@@ -35,11 +34,12 @@ export async function deleteCanvas(id) {
 
 // 하나의 캔버스 조회
 export async function getCanvasById(id) {
+  // 여기 data는 하나의 캔버스 data
   const { data } = await canvases.get(`/${id}`);
   return data;
 }
 
 // 하나의 캔버스 타이틀만 업데이트
 export async function updateTitle(id, title) {
-  canvases.patch(`/${id}`, { title });
+  await canvases.patch(`/${id}`, { title });
 }
