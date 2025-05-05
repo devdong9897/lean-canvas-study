@@ -6,33 +6,42 @@ import Loading from '../components/Loading';
 import Error from '../components/Error';
 import { createCanvas, deleteCanvas, getCanvases } from '../api/canvas';
 import Button from '../components/Button';
+import useApiRequest from '../hooks/useApiRequest';
 
 function Home() {
   const [searchText, setSearchText] = useState();
   // 뷰모드 상태(리스트형식인지 목록형식인지)
   const [isGridView, setIsGridView] = useState(true);
   const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
-  // 등록할 때 로딩상태
-  const [isLoadingCreate, setIsLoadingCreate] = useState(false);
 
-  async function fetchData(params) {
-    try {
-      setIsLoading(true);
-      setError(null);
-      await new Promise(resolver => setTimeout(resolver, 1000));
-      const response = await getCanvases(params);
-      setData(response.data);
-    } catch (err) {
-      setError(err);
-    } finally {
-      setIsLoading(false);
-    }
-  }
+  // API call
+  const { isLoading, error, execute: fetchData } = useApiRequest(getCanvases);
+  const { isLoading: isLoadingCreate, execute: createNewCanvas } =
+    useApiRequest(createCanvas);
+
+  // async function fetchData(params) {
+  //   try {
+  //     setIsLoading(true);
+  //     setError(null);
+  //     await new Promise(resolver => setTimeout(resolver, 1000));
+  //     const response = await getCanvases(params);
+  //     setData(response.data);
+  //   } catch (err) {
+  //     setError(err);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // }
   useEffect(() => {
-    fetchData({ title_like: searchText });
-  }, [searchText]);
+    fetchData(
+      { title_like: searchText },
+      {
+        onSuccess: response => setData(response.data),
+      },
+    );
+    // searchText:사용자가 검색어를 바꾸면 → 다시 검색해야 하니까.
+    // fetchData: 이건 useCallback으로 만들어졌기 때문에, 혹시라도 fetchData가 바뀌면 → 다시 실행되게 해주는 거..
+  }, [searchText, fetchData]);
 
   const handleDeleteItem = async id => {
     if (confirm('삭제 하시겠습니까?') === false) {
@@ -49,16 +58,27 @@ function Home() {
   };
 
   const handleCreateCanvas = async () => {
-    try {
-      setIsLoadingCreate(true);
-      await new Promise(resolver => setTimeout(resolver, 1000));
-      await createCanvas();
-      fetchData({ title_like: searchText });
-    } catch (err) {
-      alert(err.message);
-    } finally {
-      setIsLoadingCreate(false);
-    }
+    createNewCanvas(null, {
+      onSuccess: () => {
+        fetchData(
+          { title_like: searchText },
+          {
+            onSuccess: response => setData(response.data),
+          },
+        );
+      },
+      onError: err => alert(err.message),
+    });
+    // try {
+    //   setIsLoadingCreate(true);
+    //   await new Promise(resolver => setTimeout(resolver, 1000));
+    //   await createCanvas();
+    //   fetchData({ title_like: searchText });
+    // } catch (err) {
+    //   alert(err.message);
+    // } finally {
+    //   setIsLoadingCreate(false);
+    // }
   };
 
   return (
