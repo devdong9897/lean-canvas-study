@@ -1,6 +1,9 @@
 import { useCallback, useState } from 'react';
 
-export default function useApiRequest(apiFunction) {
+export default function useApiRequest(apiFunction, options) {
+  const { initialData = null } = options || {};
+
+  const [data, setData] = useState(initialData);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -8,12 +11,14 @@ export default function useApiRequest(apiFunction) {
   // options: {onSuccess, onError}
   // useCallback으로 다시 그리지 않고 이 함수를 기억. apiFunction이 바뀌면 기억했던 함수 지우고 다시 만들어줘.
   const execute = useCallback(
-    async (params, { onSuccess, onError }) => {
+    async (params, executeOptions) => {
+      const { onSuccess, onError } = executeOptions || {};
       try {
         setIsLoading(true);
         setError(null);
         await new Promise(resolver => setTimeout(resolver, 1000));
         const response = await apiFunction(params);
+        setData(response.data);
         if (onSuccess) {
           onSuccess(response);
         }
@@ -32,6 +37,7 @@ export default function useApiRequest(apiFunction) {
   return {
     isLoading,
     error,
+    data,
     execute,
   };
 }

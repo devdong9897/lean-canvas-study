@@ -12,10 +12,15 @@ function Home() {
   const [searchText, setSearchText] = useState();
   // 뷰모드 상태(리스트형식인지 목록형식인지)
   const [isGridView, setIsGridView] = useState(true);
-  const [data, setData] = useState([]);
+  // const [data, setData] = useState([]);
 
   // API call
-  const { isLoading, error, execute: fetchData } = useApiRequest(getCanvases);
+  const {
+    isLoading,
+    error,
+    data,
+    execute: fetchData,
+  } = useApiRequest(getCanvases, { initialData: [] });
   const { isLoading: isLoadingCreate, execute: createNewCanvas } =
     useApiRequest(createCanvas);
 
@@ -33,12 +38,7 @@ function Home() {
   //   }
   // }
   useEffect(() => {
-    fetchData(
-      { title_like: searchText },
-      {
-        onSuccess: response => setData(response.data),
-      },
-    );
+    fetchData({ title_like: searchText });
     // searchText:사용자가 검색어를 바꾸면 → 다시 검색해야 하니까.
     // fetchData: 이건 useCallback으로 만들어졌기 때문에, 혹시라도 fetchData가 바뀌면 → 다시 실행되게 해주는 거..
   }, [searchText, fetchData]);
@@ -60,12 +60,7 @@ function Home() {
   const handleCreateCanvas = async () => {
     createNewCanvas(null, {
       onSuccess: () => {
-        fetchData(
-          { title_like: searchText },
-          {
-            onSuccess: response => setData(response.data),
-          },
-        );
+        fetchData({ title_like: searchText });
       },
       onError: err => alert(err.message),
     });
