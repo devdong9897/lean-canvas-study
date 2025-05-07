@@ -10,7 +10,16 @@
       "id": 2,
       "title": "AI 기반 건강 관리 앱",
       "lastModified": "2023-06-10",
-      "category": "헬스케어"
+      "category": "헬스케어",
+      "problem": {
+        "notes": [
+          {
+            "id": "28ae23bb-330b-458d-a363-98b914a32465",
+            "content": "",
+            "color": "bg-green-300"
+          }
+        ]
+      }
     },
     {
       "id": 3,
@@ -32,9 +41,9 @@
       "problem": {
         "notes": [
           {
-            "id": "6ee273e2-1d36-4870-b1f3-460d80bd1125",
+            "id": "35153256-1fb7-4637-a445-b26b2bd47d45",
             "content": "",
-            "color": "bg-pink-300"
+            "color": ""
           }
         ]
       },
@@ -228,6 +237,10 @@
       "lastModified": "2025-05-05 17:10:20",
       "category": "신규",
       "id": 6
+    },
+    {
+      "title": "new canvas",
+      "id": 11
     }
   ]
 }
