@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import CanvasList from '../components/CanvasList';
 import SearchBar from '../components/SearchBar';
+import CategoryFilter from '../components/CategoryFilter';
 import ViewToggle from '../components/ViewToggle';
 import Loading from '../components/Loading';
 import Error from '../components/Error';
@@ -9,7 +10,15 @@ import Button from '../components/Button';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 function Home() {
-  const [searchText, setSearchText] = useState();
+  const [filter, setFilter] = useState({
+    searchText: undefined,
+    category: undefined,
+  });
+  const handleFilter = (key, value) =>
+    setFilter({
+      ...filter,
+      [key]: value,
+    });
   // 뷰모드 상태(리스트형식인지 목록형식인지)
   const [isGridView, setIsGridView] = useState(true);
 
@@ -21,8 +30,9 @@ function Home() {
     // 'canvases': 캔버스 목록을 의미.
     // searchText:  검색어를 의미.
     // 검색어에 맞는 캔버스 목록을 찾는 고유한 키가 된다.
-    queryKey: ['canvases', searchText],
-    queryFn: () => getCanvases({ title_like: searchText }),
+    queryKey: ['canvases', filter.searchText, filter.category],
+    queryFn: () =>
+      getCanvases({ title_like: filter.searchText, category: filter.category }),
     initialData: [],
   });
 
@@ -53,7 +63,17 @@ function Home() {
   return (
     <>
       <div className="mb-6 flex flex-col sm:flex-row items-center justify-between">
-        <SearchBar searchText={searchText} setSearchText={setSearchText} />
+        <div className="flex gap-2 flex-col w-full sm:flex-row mb-4 sm:mb-0 ">
+          <SearchBar
+            searchText={filter.searchText}
+            onSearch={val => handleFilter('searchText', val)}
+          />
+          <CategoryFilter
+            category={filter.category}
+            onChange={val => handleFilter('category', val)}
+          />
+        </div>
+
         <ViewToggle isGridView={isGridView} setIsGridView={setIsGridView} />
       </div>
       <div className="flex justify-end mb-6">
@@ -67,7 +87,7 @@ function Home() {
         <CanvasList
           filteredData={data}
           isGridView={isGridView}
-          searchText={searchText}
+          searchText={filter.searchText}
           onDeleteItem={handleDeleteItem}
         />
       )}
