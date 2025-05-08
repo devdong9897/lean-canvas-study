@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import dayjs from 'dayjs';
 
 // 목록 조회
-export function getCanvases(params) {
+export async function getCanvases(params) {
   const payload = Object.assign(
     {
       _sort: 'lastModified',
@@ -12,7 +12,8 @@ export function getCanvases(params) {
     params,
   );
   // .get()은 목록을 조회하는 것이므로, 조회한 데이터를 돌려줘야 하기 때문에 return을 사용. 즉, 서버에서 받아온 데이터를 다시 돌려주는 역할을 한다.
-  return canvases.get('/', { params: payload });
+  const { data } = await canvases.get('/', { params: payload });
+  return data;
 }
 
 // 생성
