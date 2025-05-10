@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { FaSearch } from 'react-icons/fa';
 
 function SearchBar({ searchText = '', onSearch }) {
+  // 사용자가 입력한 값을 저장하는 상태.
   const [localSearchText, setLocalSearchText] = useState(searchText);
   return (
     <div className="relative w-full sm:w-64">

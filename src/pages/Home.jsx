@@ -31,9 +31,16 @@ function Home() {
     // searchText:  검색어를 의미.
     // 검색어에 맞는 캔버스 목록을 찾는 고유한 키가 된다.
     queryKey: ['canvases', filter.searchText, filter.category],
-    queryFn: () =>
-      getCanvases({ title_like: filter.searchText, category: filter.category }),
-    initialData: [],
+    queryFn: () => {
+      console.log('fetching data');
+      return getCanvases({
+        title_like: filter.searchText,
+        category: filter.category,
+      });
+    },
+    // initialData: [],
+    // staleTime: 5000, //1000 * 60 * 5 // 5분 동안 데이터가 신선함(fresh) 상태로 유지
+    refetchOnWindowFocus: false,
   });
 
   // 2] 등록
